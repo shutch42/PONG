@@ -1,6 +1,7 @@
 #include <iostream>
 #include <GL/freeglut.h>
 #include "paddle.h"
+#include "ball.h"
 
 using namespace std;
 
