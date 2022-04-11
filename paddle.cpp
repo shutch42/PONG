@@ -11,3 +11,7 @@ void Paddle::moveUp() {
 void Paddle::moveDown() {
 	position -= speed;
 }
+
+int Paddle::getPosition() {
+	return position;
+}

@@ -3,7 +3,8 @@ class Paddle {
 		Paddle();
 		void moveUp();
 		void moveDown();
+		int getPosition();
 	private:
 		int position;
-		int speed = 1;
+		int speed = 5;
 };
