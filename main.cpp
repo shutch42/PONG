@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "table.h"
 
 using namespace std;
@@ -9,6 +10,7 @@ const int PADDLEH = 100;
 Paddle leftPaddle;
 Paddle rightPaddle;
 Ball b;
+string score("0");
 
 void loop(int id) {
 	b.refreshPosition();
@@ -24,6 +26,13 @@ void loop(int id) {
 	if(b.getX() <= -400) {
 		b.bounceLeft();
 	}
+	if(b.getX() == 390 && b.getY() >= rightPaddle.getPosition()-PADDLEH/2 && b.getY() <= rightPaddle.getPosition()+PADDLEH/2) {
+		b.bounceRight();
+	}
+	if(b.getX() == -390 && b.getY() >= leftPaddle.getPosition()-PADDLEH/2 && b.getY() <= leftPaddle.getPosition()+PADDLEH/2) {
+		b.bounceLeft();
+	}
+
 	glutPostRedisplay();
 }
 
