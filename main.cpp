@@ -1,7 +1,5 @@
 #include <iostream>
-#include <GL/freeglut.h>
-#include "paddle.h"
-#include "ball.h"
+#include "table.h"
 
 using namespace std;
 
@@ -10,26 +8,22 @@ const int PADDLEH = 100;
 
 Paddle leftPaddle;
 Paddle rightPaddle;
-
-void keyPressed(unsigned char key, int x, int y) {
-	if(key == 'w') {
-		leftPaddle.moveUp();
-	}
-	if(key == 's') {
-		leftPaddle.moveDown();
-	}
-}
-
-void specialInput(int key, int x, int y) {
-	if(key == GLUT_KEY_UP) {
-		rightPaddle.moveUp();
-	}
-	if(key == GLUT_KEY_DOWN) {
-		rightPaddle.moveDown();
-	}
-}
+Ball b;
 
 void loop(int id) {
+	b.refreshPosition();
+	if(b.getY() >= 300) {
+		b.bounceTop();
+	}
+	if(b.getY() <= -300) {
+		b.bounceBottom();
+	}
+	if(b.getX() >= 400) {
+		b.bounceRight();
+	}
+	if(b.getX() <= -400) {
+		b.bounceLeft();
+	}
 	glutPostRedisplay();
 }
 
@@ -48,10 +42,30 @@ void display(void) {
 	 glVertex2i(400 - PADDLEW, rightPaddle.getPosition() + PADDLEH/2);
 	 glVertex2i(400 - PADDLEW, rightPaddle.getPosition() - PADDLEH/2);
 	glEnd();
-	
+	glBegin(GL_POINTS);
+	 glVertex2i(b.getX(), b.getY());
+	glEnd();
 	glutTimerFunc((1/60)*1000, loop, 0);
 	glutSwapBuffers();
 	glFlush();
+}
+
+void moveRight(int key, int x, int y) {
+	if(key == GLUT_KEY_UP) {
+		rightPaddle.moveUp();
+	}
+	if(key == GLUT_KEY_DOWN) {
+		rightPaddle.moveDown();
+	}
+}
+
+void moveLeft(unsigned char key, int x, int y) {
+	if(key == 'w') {
+		leftPaddle.moveUp();
+	}
+	if(key == 's') {
+		leftPaddle.moveDown();
+	}
 }
 
 int main(int argc, char** argv) {
@@ -61,18 +75,18 @@ int main(int argc, char** argv) {
 
 	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(0, 0);
-
 	glutCreateWindow("PONG");
 
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
 	glColor3f(0,1,0);
+	glPointSize(10);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluOrtho2D(-400, 400, -300, 300);
 
 	glutDisplayFunc(display);
-	glutKeyboardFunc(keyPressed);
-	glutSpecialFunc(specialInput);
+	glutKeyboardFunc(moveLeft);
+	glutSpecialFunc(moveRight);
 	glutMainLoop();
 	return 0;
 }

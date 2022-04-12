@@ -6,5 +6,5 @@ class Paddle {
 		int getPosition();
 	private:
 		int position;
-		int speed = 5;
+		int speed = 10;
 };
