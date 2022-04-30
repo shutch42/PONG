@@ -3,6 +3,7 @@ class Ball {
 		Ball();
 		int getX();
 		int getY();
+		int speed;
 		void bounceTop();
 		void bounceBottom();
 		void bounceLeft();

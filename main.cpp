@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <stdio.h>
+#include <stdlib.h>
 #include "table.h"
 
 using namespace std;
@@ -10,7 +12,10 @@ const int PADDLEH = 100;
 Paddle leftPaddle;
 Paddle rightPaddle;
 Ball b;
-string score("0");
+int scoreL = 0;
+int scoreR = 0;
+char l[256];
+char r[256];
 
 void loop(int id) {
 	b.refreshPosition();
@@ -22,17 +27,18 @@ void loop(int id) {
 	}
 	if(b.getX() >= 400) {
 		b.bounceRight();
+		scoreL++;
 	}
 	if(b.getX() <= -400) {
 		b.bounceLeft();
+		scoreR++;
 	}
-	if(b.getX() == 390 && b.getY() >= rightPaddle.getPosition()-PADDLEH/2 && b.getY() <= rightPaddle.getPosition()+PADDLEH/2) {
+	if(b.getX() >= (390 + b.speed) && b.getY() >= rightPaddle.getPosition()-PADDLEH/2 && b.getY() <= rightPaddle.getPosition()+PADDLEH/2) {
 		b.bounceRight();
 	}
-	if(b.getX() == -390 && b.getY() >= leftPaddle.getPosition()-PADDLEH/2 && b.getY() <= leftPaddle.getPosition()+PADDLEH/2) {
+	if(b.getX() <= (-390 - b.speed) && b.getY() >= leftPaddle.getPosition()-PADDLEH/2 && b.getY() <= leftPaddle.getPosition()+PADDLEH/2) {
 		b.bounceLeft();
 	}
-
 	glutPostRedisplay();
 }
 
@@ -54,6 +60,12 @@ void display(void) {
 	glBegin(GL_POINTS);
 	 glVertex2i(b.getX(), b.getY());
 	glEnd();
+	glRasterPos2i(-200,250);
+	sprintf(l, "%i", scoreL);
+	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)l);
+	glRasterPos2i(200,250);
+	sprintf(r, "%i", scoreR);
+	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)r);
 	glutTimerFunc((1/60)*1000, loop, 0);
 	glutSwapBuffers();
 	glFlush();

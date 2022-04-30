@@ -5,8 +5,12 @@
 
 Ball::Ball() {
 	srand(time(0));
-	int angle = (rand() % 360)/(2*M_PI);
-	int speed = 5;
+	int angle = (rand() % 90 - 45)/(2*M_PI);
+	int direction = rand() % 2;
+	if(direction) {
+		angle *= -1;
+	}
+	speed = 5;
 	x = 0;
 	y = 0;
 	vx = speed*cos(angle);
